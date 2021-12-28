@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="前端 vue 博客">
+    <meta name="description" content="Personal blog of WoodenStone">
+    <meta name="author" content="WoodenStone">
+    
+    <title>
+        
+            Vue+Express+MySQL搭建文章后台管理系统 |
+        
+        WoodenStone&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/kuma.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"woodenstone.github.io","root":"/","language":"zh-CN","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#FF6623ee","avatar":"/images/kumanon.jpeg","favicon":"/images/kuma.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":true},"first_screen":{"enable":true,"background_img":"/images/bg.jpg","description":"The course of true love never did run smooth."},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":false},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                WoodenStone&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                分类
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">分类</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">Vue+Express+MySQL搭建文章后台管理系统</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/kumanon.jpeg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">WoodenStone</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-11-24 19:17:25
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Projects/">Projects</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/vue/">vue</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/nodejs/">nodejs</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MySQL/">MySQL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <blockquote>
+<p>功能、目录结构、设计说明和一些小细节。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>Article Admin 是一个前后端分离的文章/博客管理系统。前端采用Vue2.x全家桶并结合ElementUI，后端使用Node.js的Express框架，数据库为MySQL8.0。</p>
+<p>本项目是HTISZ 21春数据库系统课程实验四的作品。</p>
+<blockquote>
+<p>在线demo怕被攻击就不放出了🤐</p>
+</blockquote>
+<p><strong>code repository here: <a class="link"   target="_blank" rel="noopener" href="https://github.com/WoodenStone/article_admin" >[github]WoodenStone/article_admin<i class="fas fa-external-link-alt"></i></a></strong></p>
+<h2 id="SETUP"><a href="#SETUP" class="headerlink" title="SETUP"></a>SETUP</h2><h3 id="克隆项目"><a href="#克隆项目" class="headerlink" title="克隆项目"></a>克隆项目</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/WoodenStone/article_admin.git</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>将<a class="link"   target="_blank" rel="noopener" href="https://github.com/WoodenStone/article_admin/blob/main/articleAdmin.sql" >articleAdmin.sql<i class="fas fa-external-link-alt"></i></a>导入MySQL即可生成数据库。</p>
+<blockquote>
+<p> ⭕由于存在同一张表上存在多个触发器的情况，MySQL版本不能低于5.7。</p>
+</blockquote>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入项目目录</span></span><br><span class="line"><span class="built_in">cd</span> article_admin/node_back_end</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动项目</span></span><br><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+
+<p>注意：需要修改数据库用户名、密码。</p>
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入项目目录</span></span><br><span class="line"><span class="built_in">cd</span> article_admin/vue_front_end</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动项目</span></span><br><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+
+<p>访问 <a class="link"   target="_blank" rel="noopener" href="http://localhost:9529/" >http://localhost:9529<i class="fas fa-external-link-alt"></i></a> 查看前端界面。</p>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>数据库：</p>
+<p>安装<u><strong>不低于5.7版本</strong></u>的MySQL，并导入<a class="link"   target="_blank" rel="noopener" href="https://github.com/WoodenStone/article_admin/blob/main/articleAdmin.sql" >articleAdmin.sql<i class="fas fa-external-link-alt"></i></a>执行建表。</p>
+<p>前端：</p>
+<p>根据需要配置生产环境的路径，然后运行：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+
+<p>将<code>/dist</code>目录下的文件放在服务器可访问路径下（如/www）。</p>
+<p>后端：</p>
+<p>修改<code>/src/sql/db.js</code>中的数据库配置，修改<code>/app.js</code>中的图片上传路径。</p>
+<p>使用pm2或forever等工具启动项目，保持后端为开启状态。</p>
+<p>最后修改nginx配置，通过ip或域名访问查看效果。</p>
+<h2 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h2><img src="/Projects/article-admin/1.gif" class="" title="login&amp;detail">
+<img src="/Projects/article-admin/2.gif" class="" title="thumbup&amp;comment">
+<img src="/Projects/article-admin/3.gif" class="" title="colletion">
+<img src="/Projects/article-admin/4.gif" class="" title="search&amp;message">
+<img src="/Projects/article-admin/5.gif" class="" title="user">
+
+
+<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">- 注册</span><br><span class="line">- 登录 / 注销</span><br><span class="line"></span><br><span class="line">- 用户信息更改</span><br><span class="line"></span><br><span class="line">- 文章管理</span><br><span class="line">	- 发布文章</span><br><span class="line">	- 删除文章</span><br><span class="line">	- 编辑文章</span><br><span class="line">	- 模糊搜索</span><br><span class="line">	- 点赞</span><br><span class="line">	- 收藏到特定收藏夹</span><br><span class="line">	- Markdown编辑器及图片插入</span><br><span class="line">	- 文章标签</span><br><span class="line">	- 按特定方式排序（时间倒序、赞数降序、评论数降序、收藏数降序）</span><br><span class="line"></span><br><span class="line">- 评论回复</span><br><span class="line">	- 评论文章</span><br><span class="line">	- 回复用户</span><br><span class="line">	- 查看个人收到的评论、回复</span><br><span class="line">	</span><br><span class="line">- 收藏夹</span><br><span class="line">	- 添加 / 删除收藏夹</span><br><span class="line">	- 更改收藏夹名及描述</span><br><span class="line">	- 内部文章查看、删除、移动</span><br><span class="line"></span><br><span class="line">- 用户关注</span><br><span class="line">	- 关注和取关</span><br><span class="line"></span><br><span class="line">- 站内信</span><br><span class="line">	- 收 / 发站内信</span><br><span class="line">	- 阅读状态标记</span><br><span class="line">	</span><br><span class="line">- 输入错误地址时重定向至404</span><br></pre></td></tr></table></figure>
+
+<img src="/Projects/article-admin/image-20211122204638848.png" class="" title="SFHD">
+
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">|-- node_back_end		<span class="comment"># 后端工程文件</span></span><br><span class="line">|   |-- app.js			<span class="comment"># 主要API</span></span><br><span class="line">|   |-- package-lock.json</span><br><span class="line">|   |-- package.json		<span class="comment"># 配置文件</span></span><br><span class="line">|   |-- public			<span class="comment"># 静态目录</span></span><br><span class="line">|   |-- src			<span class="comment"># 数据库相关操作</span></span><br><span class="line">|   |-- upload			<span class="comment"># 上传图片存放</span></span><br><span class="line">|-- vue_front_end		<span class="comment"># 前端工程文件</span></span><br><span class="line">    |-- babel.config.js</span><br><span class="line">    |-- package-lock.json</span><br><span class="line">    |-- package.json		<span class="comment"># 项目配置</span></span><br><span class="line">    |-- public			<span class="comment"># html模板和网站图标</span></span><br><span class="line">    |   |-- favicon.ico</span><br><span class="line">    |   |-- index.html</span><br><span class="line">    |-- src			<span class="comment"># 主要代码</span></span><br><span class="line">    |   |-- App.vue</span><br><span class="line">    |   |-- assets		<span class="comment"># 静态资源，如图标字体等</span></span><br><span class="line">    |   |-- components		<span class="comment"># 公用组件</span></span><br><span class="line">    |   |   |-- ArticleList	<span class="comment"># 文章列表组件</span></span><br><span class="line">    |   |   |-- BreadCrumb	<span class="comment"># 导航栏面包屑</span></span><br><span class="line">    |   |   |-- Collection	<span class="comment"># 收藏夹组件</span></span><br><span class="line">    |   |   |-- Comment		<span class="comment"># 评论、回复组件</span></span><br><span class="line">    |   |   |-- Message		<span class="comment"># 站内信（私信）组件</span></span><br><span class="line">    |   |   |-- Tags		<span class="comment"># 文章标签组件</span></span><br><span class="line">    |   |-- layout		<span class="comment"># 页面基础布局</span></span><br><span class="line">    |   |-- main.js		<span class="comment"># 入口文件 加载组件等</span></span><br><span class="line">    |   |-- plugins		<span class="comment"># 引入的插件</span></span><br><span class="line">    |   |-- router		<span class="comment"># 路由</span></span><br><span class="line">    |   |-- settings.js</span><br><span class="line">    |   |-- store		<span class="comment"># 全局store管理</span></span><br><span class="line">    |   |-- styles		<span class="comment"># 全局样式</span></span><br><span class="line">    |   |-- utils		<span class="comment"># 常用方法</span></span><br><span class="line">    |   |-- views		<span class="comment"># 各页面</span></span><br><span class="line">    |       |-- error-page	<span class="comment"># 404页面</span></span><br><span class="line">    |       |-- form		<span class="comment"># 表单 实现文章修改和创建</span></span><br><span class="line">    |       |-- home		<span class="comment"># 站点主页面</span></span><br><span class="line">    |       |-- login		<span class="comment"># 登录、注册</span></span><br><span class="line">    |       |-- table</span><br><span class="line">    |       |   |-- detail.vue	<span class="comment"># 文章详情</span></span><br><span class="line">    |       |   |-- index.vue	<span class="comment"># 文章列表</span></span><br><span class="line">    |       |-- user		<span class="comment"># 用户相关页面</span></span><br><span class="line">    |           |-- change.vue			<span class="comment"># 修改用户信息</span></span><br><span class="line">    |           |-- collection.vue		<span class="comment"># 收藏夹</span></span><br><span class="line">    |           |-- components</span><br><span class="line">    |           |   |-- UserInfo.vue		<span class="comment"># 用户信息主页面</span></span><br><span class="line">    |           |-- favorite.vue		<span class="comment"># 收藏的文章</span></span><br><span class="line">    |           |-- index.vue			<span class="comment"># 路由入口</span></span><br><span class="line">    |           |-- message.vue			<span class="comment"># 站内信页面</span></span><br><span class="line">    |           |-- visitor.vue			<span class="comment"># 访客界面</span></span><br><span class="line">    |-- vue.config.js		<span class="comment"># vue-cli配置</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="设计详细说明"><a href="#设计详细说明" class="headerlink" title="设计详细说明"></a>设计详细说明</h2><h3 id="数据库-1"><a href="#数据库-1" class="headerlink" title="数据库"></a>数据库</h3><h4 id="概览-1"><a href="#概览-1" class="headerlink" title="概览"></a>概览</h4><p>数据库设计共包含8个实体，14个联系。</p>
+<blockquote>
+<p>努力地想让数据库满足第三范式……</p>
+</blockquote>
+<p>ER图：</p>
+<img src="/Projects/article-admin/image-20211122201625888.png" class="" title="ERD">
+
+<h4 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h4><ol>
+<li>comments - 评论回复表</li>
+</ol>
+<p>对于评论表，数据库字段如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">comment_id | publisher_id | recipient_id | article_commented_id | content | create_time | is_reply | comment_index</span><br></pre></td></tr></table></figure>
+
+<p><code>comment_id</code> 为主键，标识某条评论或回复的唯一 ID。 </p>
+<p><code>publisher_id</code>，<code>recipient_id</code> 和 <code>article_commented_id</code> 均为外键，分别对应 user_info 用户信息表中的 <code>user_id</code>、<code>user_id</code> 和 article 文章信息表中的 id， 表示发布者 id，接收方 id 和被评论文章的 id。 </p>
+<p>其 中 <code>comment_id</code> 、 <code>publisher_id</code> 、 <code>article_commented_id</code> 、 <code>content</code> 和 <code>create_time</code> 均不能为空，表示需要唯一确定某篇文章下由某个用户所发表的某条评论。而 <code>recipient_id</code> 可以为空，因为如果用户直接对某篇文章发表回复，就不需要特意指定接收者 ID(即文章作者 ID)；相应地，如果不为空，则需要在 is_reply 中指定为 1，并且指定接收者 ID 和该评论在该文章中的索引。<code>comment_index</code> 字段的设置是由于一个用户可能在某篇 文章下发表多条评论，直接查找 <code>comment_id</code> 过于繁琐，因此显式指定其文章内索引。下面是 api 接口返回的一个实例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">&quot;comment_id&quot;</span>: <span class="number">35</span>,</span><br><span class="line">    <span class="attr">&quot;publisher_id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">&quot;recipient_id&quot;</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="attr">&quot;article_commented_id&quot;</span>: <span class="number">20</span>,</span><br><span class="line">    <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;月が綺麗ですね&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;create_time&quot;</span>: <span class="string">&quot;2021-11-22T12:54:36.000Z&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;is_reply&quot;</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="attr">&quot;comment_index&quot;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;comment_id&quot;</span>: <span class="number">36</span>,</span><br><span class="line">        <span class="attr">&quot;publisher_id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">&quot;recipient_id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">&quot;article_commented_id&quot;</span>: <span class="number">20</span>,</span><br><span class="line">        <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;月が綺麗ですね&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;create_time&quot;</span>: <span class="string">&quot;2021-11-22T12:54:40.000Z&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;is_reply&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">&quot;comment_index&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;publisher_name&quot;</span>: <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;recipient_name&quot;</span>: <span class="string">&quot;admin&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;publisher_name&quot;</span>: <span class="string">&quot;admin&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="后端-1"><a href="#后端-1" class="headerlink" title="后端"></a>后端</h3><p>后端没有完整的架构，仅提供RESTful API用于操作数据库，以便增删查改。</p>
+<p>API均以<code>/api/</code>前缀，并在注释简要说明了所提供的功能，主要包括：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>方法</th>
+<th>简要功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Login</td>
+<td>POST</td>
+<td>用户登录</td>
+</tr>
+<tr>
+<td>Register</td>
+<td>POST</td>
+<td>用户注册</td>
+</tr>
+<tr>
+<td>userInfoChange</td>
+<td>POST</td>
+<td>用户信息更改</td>
+</tr>
+<tr>
+<td>uploadAvatar</td>
+<td>POST</td>
+<td>头像上传</td>
+</tr>
+<tr>
+<td>Article</td>
+<td>GET</td>
+<td>获取带有标签的文章列表</td>
+</tr>
+<tr>
+<td>personalArticle</td>
+<td>GET</td>
+<td>获取某用户的文章</td>
+</tr>
+<tr>
+<td>articleDetail</td>
+<td>GET</td>
+<td>获取某篇文章信息及标签</td>
+</tr>
+<tr>
+<td>deleteArticle</td>
+<td>DELETE</td>
+<td>删除某一篇文章</td>
+</tr>
+<tr>
+<td>addArticle</td>
+<td>POST</td>
+<td>添加文章</td>
+</tr>
+<tr>
+<td>updateArticle</td>
+<td>POST</td>
+<td>更新某一篇文章</td>
+</tr>
+<tr>
+<td>imgUpload</td>
+<td>POST</td>
+<td>文章内图片上传</td>
+</tr>
+<tr>
+<td>getAvatar</td>
+<td>GET</td>
+<td>由用户ID获取用户头像</td>
+</tr>
+<tr>
+<td>getAvatarByName</td>
+<td>GET</td>
+<td>由name获取头像</td>
+</tr>
+<tr>
+<td>getIdByName</td>
+<td>GET</td>
+<td>由用户名获取id</td>
+</tr>
+<tr>
+<td>thumbupStatus</td>
+<td>GET</td>
+<td>获取用户对某篇文章的点赞状态</td>
+</tr>
+<tr>
+<td>favoriteStatus</td>
+<td>GET</td>
+<td>获取用户对某篇文章的收藏状态</td>
+</tr>
+<tr>
+<td>thumbupStatus</td>
+<td>POST</td>
+<td>变更点赞状态</td>
+</tr>
+<tr>
+<td>favoriteStatus</td>
+<td>POST</td>
+<td>变更收藏状态</td>
+</tr>
+<tr>
+<td>getRelationStatusOne</td>
+<td>GET</td>
+<td>获取一对一关注状态</td>
+</tr>
+<tr>
+<td>followStatusChange</td>
+<td>POST</td>
+<td>变更关注状态</td>
+</tr>
+<tr>
+<td>getFollowerNumber</td>
+<td>GET</td>
+<td>获取被关注数</td>
+</tr>
+<tr>
+<td>getFollowingNumber</td>
+<td>GET</td>
+<td>获取关注数</td>
+</tr>
+<tr>
+<td>commentsOfOneArticle</td>
+<td>GET</td>
+<td>获取某篇文章的评论和回复</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td>POST</td>
+<td>添加文章评论或回复</td>
+</tr>
+<tr>
+<td>FollowersList</td>
+<td>GET</td>
+<td>获取被关注列表</td>
+</tr>
+<tr>
+<td>FollowingList</td>
+<td>GET</td>
+<td>获取关注人列表</td>
+</tr>
+<tr>
+<td>CommentsReceived</td>
+<td>GET</td>
+<td>某用户收到的评论和回复</td>
+</tr>
+<tr>
+<td>directMessage</td>
+<td>GET</td>
+<td>获取某用户收到的站内信</td>
+</tr>
+<tr>
+<td>directMessageOut</td>
+<td>GET</td>
+<td>获取某用户发出的站内信</td>
+</tr>
+<tr>
+<td>messageReadStatus</td>
+<td>POST</td>
+<td>更改某条站内信的阅读状态</td>
+</tr>
+<tr>
+<td>newMessage</td>
+<td>POST</td>
+<td>发送站内信</td>
+</tr>
+<tr>
+<td>message</td>
+<td>DELETE</td>
+<td>删除某条站内信</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>GET</td>
+<td>获取某用户的收藏夹</td>
+</tr>
+<tr>
+<td>favoriteArticle</td>
+<td>GET</td>
+<td>获取某用户某收藏夹的文章</td>
+</tr>
+<tr>
+<td>newCollection</td>
+<td>POST</td>
+<td>创建新收藏夹</td>
+</tr>
+<tr>
+<td>collectionInfo</td>
+<td>POST</td>
+<td>修改收藏夹信息</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>DELETE</td>
+<td>删除收藏夹</td>
+</tr>
+<tr>
+<td>collectionStatus</td>
+<td>GET</td>
+<td>查找某用户将某篇文章收藏于哪些收藏夹</td>
+</tr>
+<tr>
+<td>articleFavorite</td>
+<td>POST</td>
+<td>添加某篇文章到某些收藏夹</td>
+</tr>
+<tr>
+<td>ArticleThumbupDesc</td>
+<td>GET</td>
+<td>获取赞数降序的文章列表</td>
+</tr>
+<tr>
+<td>ArticleFavoriteDesc</td>
+<td>GET</td>
+<td>获取收藏降序的文章列表</td>
+</tr>
+<tr>
+<td>ArticleCommentsDesc</td>
+<td>GET</td>
+<td>获取回复评论数降序的文章列表</td>
+</tr>
+<tr>
+<td>search</td>
+<td>POST</td>
+<td>模糊搜索，包含标题、内容、作者</td>
+</tr>
+<tr>
+<td>searchName</td>
+<td>POST</td>
+<td>用户名输入提示</td>
+</tr>
+<tr>
+<td>statistic</td>
+<td>GET</td>
+<td>首页创作统计数据</td>
+</tr>
+</tbody></table>
+<h4 id="补充说明-1"><a href="#补充说明-1" class="headerlink" title="补充说明"></a>补充说明</h4><h5 id="文章标签"><a href="#文章标签" class="headerlink" title="文章标签"></a>文章标签</h5><p>由于文章和标签是多对多关系，故数据库设计将文章标签id和文章id单独抽取出来组成一个描述映射的关系，而文章表（article）和标签表(tag)独立存在。这就给修改标签带来了麻烦。</p>
+<p>在更新文章时，每个标签都可能被更改、删除，因此采用的方式是在先删除该文章原有的标签映射（article_tag表），再进行标签表（tag）的更新，最后重新建立该文章和标签的映射（article_tag表）。这个流程是：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete tag mappings -&gt; add tags -&gt; add tag mappings </span><br></pre></td></tr></table></figure>
+
+<p>可能效率比较低，或许后续能找到更好的方式。</p>
+<h5 id="图片上传"><a href="#图片上传" class="headerlink" title="图片上传"></a>图片上传</h5><p>图片上传采用了<a class="link"   target="_blank" rel="noopener" href="https://github.com/expressjs/multer" >multer<i class="fas fa-external-link-alt"></i></a>中间件，用到的地方有用户头像上传和文章内图片上传。主要思路都是：</p>
+<ul>
+<li>将图片上传至服务器</li>
+<li>将服务器路径存入数据库</li>
+<li>将服务器路径返回，前端回显</li>
+</ul>
+<p>具体的操作有细微不同，且需要进行静态资源路径的设置。</p>
+<h5 id="评论和回复"><a href="#评论和回复" class="headerlink" title="评论和回复"></a>评论和回复</h5><p>评论和回复的sql逻辑不太明显，因为数据库表字段的设计造成了一些麻烦。</p>
+<p>两个主要的功能：①查询某篇文章下的评论回复和②查询某用户收到的评论回复。</p>
+<ol>
+<li>查询某篇文章下的评论回复</li>
+</ol>
+<p>由于需要返回的是一个最多2层高的树，示例如：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- 评论1</span><br><span class="line">	- 回复1</span><br><span class="line">	- 回复2</span><br><span class="line">- 评论2</span><br><span class="line">	- 回复1</span><br><span class="line">	- 回复2</span><br><span class="line">- 评论3</span><br></pre></td></tr></table></figure>
+
+<p>故采取的方式是先找到该文章下的所有评论，得到一个包含全部评论id的数组，再依次查找每条评论下是否有存在回复，如果存在回复，就拼接到<code>children</code>数组中。</p>
+<p>在查找回复的sql中，不能指定接收者的id(即<code>comments</code>表中的<code>recipient_id</code>)，因为回复有可能是楼中楼的沟通，如：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- A 评论[content]</span><br><span class="line">	- B 回复 A 	<span class="comment"># 回复1</span></span><br><span class="line">	- C 回复 B	<span class="comment"># 回复2</span></span><br><span class="line">	- C 回复 C	<span class="comment"># 回复3</span></span><br></pre></td></tr></table></figure>
+
+<p>如果指定接收用户id，可能导致回复2和回复3都无法收取到。</p>
+<p>这里也比较降低效率的是需要反复地获取用户名（或者进行表的连接），因为数据库设计都是以<code>user_id</code>作为外键关联。</p>
+<ol start="2">
+<li>查询某用户收到的评论回复</li>
+</ol>
+<p>以查询某用户收到的评论为例，说明一下sql的逻辑。</p>
+<p>首先，要在<code>article</code>表中找到该用户所发表的文章id，然后根据文章id在<code>comments</code>表中查询收到的评论（排除自己发表的评论），最后需要拼接上发表者用户名和文章标题。</p>
+<p>sql:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ar.title,</span><br><span class="line">         co.publisher_name,</span><br><span class="line">         co.publisher_id,</span><br><span class="line">         co.article_commented_id,</span><br><span class="line">         co.content,</span><br><span class="line">         co.create_time,</span><br><span class="line">         co.is_reply</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    (<span class="keyword">SELECT</span> us.user_name <span class="keyword">AS</span> publisher_name,</span><br><span class="line">         uc.publisher_id,</span><br><span class="line">         uc.article_commented_id,</span><br><span class="line">         uc.content,</span><br><span class="line">         uc.create_time,</span><br><span class="line">         uc.is_reply</span><br><span class="line">    <span class="keyword">FROM</span> </span><br><span class="line">        (<span class="keyword">SELECT</span> c.publisher_id,</span><br><span class="line">         c.article_commented_id,</span><br><span class="line">         c.content,</span><br><span class="line">         c.create_time,</span><br><span class="line">        is_reply</span><br><span class="line">        <span class="keyword">FROM</span> comments c, article a, user_info u</span><br><span class="line">        <span class="keyword">WHERE</span> c.article_commented_id <span class="operator">=</span> a.id</span><br><span class="line">                <span class="keyword">AND</span> a.author_id <span class="operator">=</span> u.user_id</span><br><span class="line">                <span class="keyword">AND</span> u.user_id <span class="operator">=</span> $&#123;uid&#125;</span><br><span class="line">                <span class="keyword">AND</span> is_reply <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line">                <span class="keyword">AND</span> publisher_id <span class="operator">&lt;&gt;</span> $&#123;uid&#125;) <span class="keyword">AS</span> uc, user_info us</span><br><span class="line">        <span class="keyword">WHERE</span> uc.publisher_id <span class="operator">=</span> us.user_id ) <span class="keyword">AS</span> co, article ar</span><br><span class="line">    <span class="keyword">WHERE</span> co.article_commented_id <span class="operator">=</span> ar.id;</span><br></pre></td></tr></table></figure>
+
+<p><code>$&#123;uid&#125;</code>是传入的参数。</p>
+<p>这两个功能使用<code>db()</code>分别返回一个Promise，最后使用<code>Promise.all()</code>一同处理，将得到的结果拼接，返回给前端。</p>
+<blockquote>
+<p>后端现在基本改用参数化查询了，会对双引号等做转义，并且能预防SQL注入。</p>
+<p>各种原理还是不太懂，不过到处在用promise、async / await，对这些更了解了。</p>
+</blockquote>
+<h3 id="前端-1"><a href="#前端-1" class="headerlink" title="前端"></a>前端</h3><h4 id="概览-2"><a href="#概览-2" class="headerlink" title="概览"></a>概览</h4><p>前端根据数据库设计，主要有登录注册、个人主页、文章、站内信、收藏几个主要路由，分为登录注册、文章增删查改、站内信、评论、站内信、收藏几个主要模块来实现。</p>
+<p>采用vue-cli脚手架搭建项目，主要使用ES6语法编写代码。使用vue-router进行路由管理，Less作为CSS预处理器，Axios进行前后端数据交互。</p>
+<h4 id="补充说明-2"><a href="#补充说明-2" class="headerlink" title="补充说明"></a>补充说明</h4><h5 id="登录注册"><a href="#登录注册" class="headerlink" title="登录注册"></a>登录注册</h5><p>第一版：登录采取的是比较简陋（不科学）的方式：用户输入用户名、密码后向服务端验证正确性，若正确则将信息存入 localStorage，权限也是写死在用户信息中的（作为数据库表中的一个字段存在）。这是考虑到作为一个博客后台管理系统，或者说带有部分社交属性（私信、评论）的系统，管理员的权限并不需要和普通用户做出非常大的区分。登录信息过期通过代码设置 localStorage 的有效期为 7 天。</p>
+<blockquote>
+<p><em>21/12/28 update</em></p>
+<p>注册登录现在采用了jwt做验证。具体流程是：</p>
+<ul>
+<li>用户第一次登录时，后端签发token，设置有效期7天</li>
+<li>前端拿到token存入cookie中（or localStorage），利用axios拦截器在每次发送请求时都带上这个token（这里叫<code>aa-token</code>）</li>
+<li>后端对除白名单内的路由进行token校验（白名单就是登录、注册这两个），如果校验失败，根据消息提示告诉前端是token过期了还是没有登录；否则正常处理</li>
+<li>如过期，前端用相应拦截器根据返回的错误状态码展示提示，并跳转到登录页；否则正常处理</li>
+</ul>
+<p>同时，前端还使用<code>route.beforeEach</code>在进入每个路由前都进行判断是否有token存在。如果token过期，不发请求应该是感受不到的。如果进行操作，就会进入到登录页。</p>
+<p>如果要无感保持登录，最好加上refresh token。</p>
+<p>由于原本的很多代码都是基于localStorage中的信息写的，为了尽可能地少改点代码（否则真的要重写了），在登录后还是会将信息存到localStorage中。不过它的过期时间已经没意义了，都由token进行外层的保护。</p>
+</blockquote>
+<h5 id="文章列表展示"><a href="#文章列表展示" class="headerlink" title="文章列表展示"></a>文章列表展示</h5><p>文章列表的主要组件位于components/ArticleList下，实现功能为文章列表的展示，可选项包括：</p>
+<ul>
+<li>是否展示包含新增、搜索和排序的工具栏 - <code>showHeader</code></li>
+<li>是否显示作者 - <code>showAuthor</code></li>
+<li>是否展示内容预览 - <code>showContent</code></li>
+<li>使用场景：个人文章 - <code>personal</code></li>
+<li>使用场景：收藏夹内 - <code>collection</code></li>
+</ul>
+<p>该组件在文章列表（路由/table）、个人收藏夹内页面（/user/favorite）、用户个人文章（包含自己的和访客所见的文章： /user/index和/user/visitor）页面均有使用。</p>
+<h5 id="文章排序"><a href="#文章排序" class="headerlink" title="文章排序"></a>文章排序</h5><p>排序方式有：默认时间倒序、按赞数降序、按收藏数降序和按评论数降序，后三种后端返回的都是一个文章id数组，按指定方式降序排列。</p>
+<p>如按赞数降序返回的是一个形如<code>[6, 9, 10, 1]</code>的数组，表明赞数为6&gt;9&gt;10&gt;1&gt;其它，未出现的文章赞数为0（表中根本没有这篇文章被赞过的记录）。前端根据这个数组进行交换排序：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:: 根据传入的index索引对array进行交换排序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Array&#125;</span> <span class="variable">index</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Array&#125;</span> <span class="variable">array</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: WoodenStone</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">interchange (index, array) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; index.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (array[i].id !== index[i].id) &#123;</span><br><span class="line">      <span class="keyword">let</span> temp = &#123;&#125;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; array.length; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (array[j].id === index[i].id) &#123;</span><br><span class="line">          <span class="comment">// 用set或者splice来更新视图</span></span><br><span class="line">          temp = array[j]</span><br><span class="line">          <span class="built_in">this</span>.$set(array, j, array[i])</span><br><span class="line">          <span class="built_in">this</span>.$set(array, i, temp)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这么写是在后端排好序返回一个大数据包和前端排序进行交换哪个更快进行了选择，不过或许哪个都不是好的选择……</p>
+</blockquote>
+<h5 id="文章标签-1"><a href="#文章标签-1" class="headerlink" title="文章标签"></a>文章标签</h5><p>核心组件位于<code>/src/components/Tags</code>，主要实现功能为输入标签，按回车键添加标签，按DELETE键删除标签。单个标签的字数和一篇文章最多可有的标签数均作出限制。</p>
+<h5 id="评论回复"><a href="#评论回复" class="headerlink" title="评论回复"></a>评论回复</h5><p>找了一些开源轮子，没找到满意的，最后还是自己实现一个。核心组件位于<code>/src/components/Comment</code>下，分为单个回复（<code>ReplyItem</code>）、单个评论（包含回复，<code>CommentItem</code>）和所有评论（<code>CommentGroup</code>），给index传入正确的数据即可展示，评论是最多两层的树，效果如下图：</p>
+<img src="/Projects/article-admin/image-20211122212552753.png" class="" title="comment&amp;reply">
+
+<p>评论的回复采取的是ElementUI中的dialog组件实现，并使用开源轮子封装的<code>v-dialogDrag</code>指令使得dialog框可以拖动。在回复和评论中的“回复”按钮是在<code>CommentGroup</code>中组装的，换言之<code>CommentItem</code>和<code>ReplyItem</code>其实是兄弟关系。这样做是因为想把“回复”这个需要调用接口，传递数据的功能尽可能集中起来，就不用再使用<code>$emit()</code>等方法传参了。不过从设计上来看，可能设计为父子关系会更为直观一些。</p>
+<blockquote>
+<p>前端是越看需要改进的地方越多😑 重构❎ 重写✅</p>
+<p>虽然这个项目叫做“xxx后台管理系统”，但是只是为了符合“xxx后台管理系统”的叫法……从实现上来看，文章详情页、收藏、站内信都不能说很符合这个场景，更像是一个综合在一起的应用。</p>
+<p>最后，自己给自己提需求实在是太困难了！每当开始思考用户画像的时候，都会陷入“这种东西真的会有人想用吗”的怀疑中。从功能上来说，其实脑海里想的是lofter，但是lofter的目标群体还是挺明确的，而且它网页版和手机版差得不是一点半点，用起来感觉也怪怪的。最终还是在“既然想了就得做出来吧”这种念头的鼓励下做了。嗯，用来放点自己的零散想法还是可以的。第一个项目，之后还是想尝试点别的，RN？electron？以后再说咯。</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a class="link"   target="_blank" rel="noopener" href="https://github.com/PanJiaChen/vue-admin-template" >vue-element-admin的基础模板<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：Vue+Express+MySQL搭建文章后台管理系统</li>
+        <li>本文作者：WoodenStone</li>
+        <li>创建时间：2021-11-24 19:17:25</li>
+        <li>
+            本文链接：https://woodenstone.github.io/Projects/article-admin/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/Whim/create-my-dark-mode/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">写个脚本保护视力</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2021</span>
+              -
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">WoodenStone</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SETUP"><span class="nav-number">2.</span> <span class="nav-text">SETUP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%8B%E9%9A%86%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.1.</span> <span class="nav-text">克隆项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.2.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF"><span class="nav-number">2.3.</span> <span class="nav-text">后端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF"><span class="nav-number">2.4.</span> <span class="nav-text">前端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2"><span class="nav-number">2.5.</span> <span class="nav-text">部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E8%A7%88"><span class="nav-number">3.</span> <span class="nav-text">预览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-number">4.</span> <span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E"><span class="nav-number">6.</span> <span class="nav-text">设计详细说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-1"><span class="nav-number">6.1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E8%A7%88-1"><span class="nav-number">6.1.1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="nav-number">6.1.2.</span> <span class="nav-text">补充说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF-1"><span class="nav-number">6.2.</span> <span class="nav-text">后端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E-1"><span class="nav-number">6.2.1.</span> <span class="nav-text">补充说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E6%A0%87%E7%AD%BE"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">文章标签</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">图片上传</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%84%E8%AE%BA%E5%92%8C%E5%9B%9E%E5%A4%8D"><span class="nav-number">6.2.1.3.</span> <span class="nav-text">评论和回复</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF-1"><span class="nav-number">6.3.</span> <span class="nav-text">前端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E8%A7%88-2"><span class="nav-number">6.3.1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E-2"><span class="nav-number">6.3.2.</span> <span class="nav-text">补充说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C"><span class="nav-number">6.3.2.1.</span> <span class="nav-text">登录注册</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E5%88%97%E8%A1%A8%E5%B1%95%E7%A4%BA"><span class="nav-number">6.3.2.2.</span> <span class="nav-text">文章列表展示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E6%8E%92%E5%BA%8F"><span class="nav-number">6.3.2.3.</span> <span class="nav-text">文章排序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E6%A0%87%E7%AD%BE-1"><span class="nav-number">6.3.2.4.</span> <span class="nav-text">文章标签</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%84%E8%AE%BA%E5%9B%9E%E5%A4%8D"><span class="nav-number">6.3.2.5.</span> <span class="nav-text">评论回复</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/code-copy.js"></script>
+
+
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/toc.js"></script>
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
